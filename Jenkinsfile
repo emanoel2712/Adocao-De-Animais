@@ -15,8 +15,7 @@ pipeline {
             }
         }
        
- 
-    stage('Results'){
+     stage('Results'){
       steps{
         script{
           def logz = currentBuild.rawBuild.getLog(1000);
@@ -26,6 +25,6 @@ pipeline {
           }
        }
      }
-   }
+  }          
 }
      
