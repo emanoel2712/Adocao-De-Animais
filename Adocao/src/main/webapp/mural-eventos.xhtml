@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="titulo">Mural de eventos</ui:define>
+	<ui:define name="corpo">
+		<f:metadata>
+
+			<f:viewAction action="#{pesquisaEventosBean.inicializar}"></f:viewAction>
+
+		</f:metadata>
+
+		<h:form id="form">
+
+			<p:dataGrid var="e" value="#{pesquisaEventosBean.listaEventos}"
+				columns="3" id="coluna" layout="grid" rows="9" paginator="true"
+				paginatorPosition="bottom"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="9,12,18"
+				emptyMessage="Não há registro de eventos">
+
+				<f:facet name="header">
+					<p:outputLabel value="Mural de eventos"
+						style="font-size:25px; margin-bottom: 15px;" />
+					<div>
+						<p:outputLabel value="Buscar nome do evento: " for="buscar" />
+						<p:inputText id="buscar" value="#{pesquisaEventosBean.nomeEvento}">
+							<p:ajax event="blur"
+								listener="#{pesquisaEventosBean.pesquisaEventoNome}"
+								update="form" />
+						</p:inputText>
+					</div>
+				</f:facet>
+
+				<h:panelGrid columns="1" style="width:100% ; text-align:center">
+					<p:graphicImage name="#{e.foto.caminho}"
+						library="imagens" height="450px" width="440px" />
+
+					<p:outputLabel value="Evento: #{e.nome}" />
+
+					<p:outputLabel value="#{e.data}" style="color:blue">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+					</p:outputLabel>
+
+					<p:outputLabel
+						value="Logradouro: #{e.endereco.logradouro} Número: #{e.endereco.numero}" />
+					<p:outputLabel value="CEP: #{e.endereco.cep}" />
+					<p:outputLabel value="Estado: #{e.endereco.estado}" />
+					<p:outputLabel value="Cidade: #{e.endereco.cidade}" />
+					<p:outputLabel value="Bairro: #{e.endereco.bairro}" />
+				</h:panelGrid>
+
+			</p:dataGrid>
+
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>

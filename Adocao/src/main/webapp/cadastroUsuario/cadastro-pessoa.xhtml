@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="corpo">
+
+
+		<h:form id="formulario"
+			style="position:absolute; text-align:center; width: 100%">
+
+			<f:metadata>
+				<f:viewAction action="#{cadastroPessoaBean.inicializar}" />
+			</f:metadata>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+
+			<h1 style="color: #0388e5; text-align: center">Cadastro de
+				Pessoa</h1>
+
+			<div class="ui-fluid" style="position: relative">
+				<p:panelGrid columns="2"
+					columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10,ui-g-12 ui-md-10,ui-g-12 ui-md-10"
+					layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid layout-paginas">
+
+					<p:outputLabel value="Nome: " for="nome" />
+					<p:inputText id="nome" value="#{cadastroPessoaBean.pessoa.nome}"
+						required="true" />
+
+
+					<p:outputLabel value="WhatsApp " for="telefone" />
+					<p:inputMask id="telefone"
+						value="#{cadastroPessoaBean.pessoa.telefone}" required="true"
+						mask="(99) 99999-9999" />
+
+					<p:outputLabel value="Email: " for="email" />
+					<p:inputText id="email" value="#{cadastroPessoaBean.pessoa.email}"
+						required="true" />
+
+					<p:outputLabel value="Senha: " for="senha" />
+					<p:password id="senha" required="true" feedback="true"
+						match="confirmacao" promptLabel="Digite uma senha"
+						weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte"
+						value="#{cadastroPessoaBean.pessoa.usuario.senha}" />
+
+					<p:outputLabel value="Confirmação de senha " for="confirmacao" />
+					<p:password id="confirmacao" required="true" feedback="true"
+						promptLabel="Digite uma senha" weakLabel="Fraca" goodLabel="Boa"
+						strongLabel="Forte" />
+
+
+					<p:growl id="messages" showDetail="true" />
+					<p:commandButton value="Salvar"
+						style="padding: 5px; margin-top: 25px"
+						action="#{cadastroPessoaBean.salvar}" update="formulario" />
+				</p:panelGrid>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

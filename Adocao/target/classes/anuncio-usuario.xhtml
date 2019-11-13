@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="titulo">Anúncio usuário</ui:define>
+	<ui:define name="corpo">
+
+		<h:form id="formulario"
+			style="position:absolute; text-align:center; width: 100%">
+			<f:metadata>
+				<f:viewAction action="#{meusAnunciosBean.inicializar}" />
+			</f:metadata>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<h1 style="color: blue; text-align: center">Meus Anúncios</h1>
+
+			<p:tabView>
+
+				<p:tab
+					title="Publicado(s) ( #{meusAnunciosBean.numeroPublicacoes} )">
+
+					<p:carousel value="#{meusAnunciosBean.listAnimal}"
+						headerText="Publicações" var="animal" responsive="true"
+						style="width:100%">
+
+						<p:galleria value="#{animal.listFotos}" var="image"
+							panelWidth="350" panelHeight="300" showCaption="false"
+							style="margin-left:35px" autoPlay="false">
+							<p:graphicImage name="#{image.caminho}" alt="Imagem #{image}"
+								library="imagens" width="auto" height="100%" />
+						</p:galleria>
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome" />
+							<p:outputLabel value="#{animal.nome}" />
+
+							<p:outputLabel value="Sexo" />
+							<p:outputLabel value="#{animal.sexo}" />
+
+							<p:outputLabel value="Raca" />
+							<p:outputLabel value="#{animal.raca.nome}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{animal.estado}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{animal.cidade}" />
+
+							<p:outputLabel value="Observação" />
+							<p:outputLabel value="#{animal.observacao}"
+								style="word-break: break-word;" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="3"
+							style="display: inline-block; position: relative;">
+
+							<p:button value="Editar" icon="ui-icon-pencil"
+								outcome="/editar-adocao">
+								<f:param name="animal" value="#{animal.id}" />
+							</p:button>
+
+							<p:commandButton value="Excluir" icon="ui-icon-trash"
+								action="#{meusAnunciosBean.adicionarListExcluidos}"
+								update="formulario">
+								<f:setPropertyActionListener value="#{animal}"
+									target="#{meusAnunciosBean.animal}" />
+							</p:commandButton>
+
+						</p:panelGrid>
+					</p:carousel>
+				</p:tab>
+				<p:tab title="Procurado(s) ( #{meusAnunciosBean.numeroPerdidos} )">
+
+
+					<p:carousel value="#{meusAnunciosBean.listAnimalPerdidos}"
+						headerText="Publicações" var="a" responsive="true">
+
+						<p:galleria value="#{a.listFotos}" var="imagem" panelWidth="350"
+							panelHeight="300" showCaption="false" style="margin-left:35px"
+							autoPlay="false">
+							<p:graphicImage name="#{imagem.caminho}" alt="Imagem #{imagem}"
+								library="imagens" width="auto" height="100%" />
+						</p:galleria>
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome" />
+							<p:outputLabel value="#{a.nome}" />
+
+							<p:outputLabel value="Sexo" />
+							<p:outputLabel value="#{a.sexo}" />
+
+							<p:outputLabel value="Raca" />
+							<p:outputLabel value="#{a.raca.nome}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{a.estado}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{a.cidade}" />
+
+							<p:outputLabel value="Observação" />
+							<p:outputLabel value="#{a.observacao}"
+								style="word-break: break-word;" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="3"
+							style="display: inline-block; position: relative;">
+
+							<p:button value="Editar" icon="ui-icon-pencil"
+								outcome="/editar-adocao">
+								<f:param name="animal" value="#{a.id}" />
+							</p:button>
+
+							<p:commandButton value="Excluir" icon="ui-icon-trash"
+								action="#{meusAnunciosBean.adicionarListExcluidos}"
+								update="formulario">
+								<f:setPropertyActionListener value="#{a}"
+									target="#{meusAnunciosBean.animal}" />
+							</p:commandButton>
+
+						</p:panelGrid>
+					</p:carousel>
+
+				</p:tab>
+
+				<p:tab title="Adoção(ões) ( #{meusAnunciosBean.numeroAdocao} )">
+
+
+					<p:carousel value="#{meusAnunciosBean.listAnimalAdocao}"
+						headerText="Publicações" var="adocao" responsive="true">
+
+						<p:galleria value="#{adocao.listFotos}" var="imagem"
+							panelWidth="350" panelHeight="300" showCaption="false"
+							style="margin-left:35px" autoPlay="false">
+							<p:graphicImage name="#{imagem.caminho}" alt="Imagem #{imagem}"
+								library="imagens" width="auto" height="100%" />
+						</p:galleria>
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome" />
+							<p:outputLabel value="#{adocao.nome}" />
+
+							<p:outputLabel value="Sexo" />
+							<p:outputLabel value="#{adocao.sexo}" />
+
+							<p:outputLabel value="Raca" />
+							<p:outputLabel value="#{adocao.raca.nome}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{adocao.estado}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{adocao.cidade}" />
+
+							<p:outputLabel value="Status" />
+							<p:outputLabel value="#{adocao.status}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="3"
+							style="display: inline-block; position: relative;">
+
+							<p:column
+								style="text-align: center; width: 80px; margin-top:15px;">
+								<p:commandButton value="Confirmar Adoção" icon="ui-icon-check"
+									update="formulario"
+									action="#{meusAnunciosBean.confirmarAdocao}"
+									rendered="#{adocao.verificarStatus()}">
+
+									<f:setPropertyActionListener value="#{adocao}"
+										target="#{meusAnunciosBean.animal}" />
+
+								</p:commandButton>
+							</p:column>
+
+							<p:column
+								style="text-align: center; width: 80px; margin-top:15px;">
+								<p:commandButton value="Cancelar Adoção" icon="ui-icon-thrash"
+									action="#{meusAnunciosBean.cancelarAdocao}" update="formulario"
+									rendered="#{adocao.verificarStatus()}">
+
+									<f:setPropertyActionListener value="#{adocao}"
+										target="#{meusAnunciosBean.animal}" />
+
+								</p:commandButton>
+							</p:column>
+
+						</p:panelGrid>
+					</p:carousel>
+
+				</p:tab>
+
+				<p:tab title="Excluido(s) ( #{meusAnunciosBean.numeroExcluido} )">
+					<p:carousel value="#{meusAnunciosBean.listAnimalExcluido}"
+						headerText="Publicações" var="excluidos" responsive="true">
+
+						<p:galleria value="#{excluidos.listFotos}" var="imagem"
+							panelWidth="350" panelHeight="300" showCaption="false"
+							style="margin-left:35px" autoPlay="false">
+							<p:graphicImage name="#{imagem.caminho}" alt="Imagem #{imagem}"
+								library="imagens" width="auto" height="100%" />
+						</p:galleria>
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome" />
+							<p:outputLabel value="#{excluidos.nome}" />
+
+							<p:outputLabel value="Sexo" />
+							<p:outputLabel value="#{excluidos.sexo}" />
+
+							<p:outputLabel value="Raca" />
+							<p:outputLabel value="#{excluidos.raca.nome}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{excluidos.estado}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{excluidos.cidade}" />
+
+							<p:outputLabel value="Observação" />
+							<p:outputLabel value="#{excluidos.observacao}"
+								style="word-break: break-word;" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="3"
+							style="display: inline-block; position: relative;">
+
+							<p:column
+								style="text-align: center; width: 80px; margin-top:15px;">
+
+								<p:button value="Recadastrar Animal" icon="ui-icon-pencil"
+									outcome="/cadastro-adocao">
+									<f:param name="animal" value="#{excluidos.id}" />
+								</p:button>
+
+								<p:commandButton value="Excluir" icon="ui-icon-trash"
+									action="#{meusAnunciosBean.excluir}" update="formulario">
+									<f:setPropertyActionListener value="#{excluidos}"
+										target="#{meusAnunciosBean.animal}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:panelGrid>
+
+					</p:carousel>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

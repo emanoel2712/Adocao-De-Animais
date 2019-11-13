@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="corpo">
+
+		<h:form id="formulario" enctype="multipart/form-data"
+			style="position:absolute; text-align:center; width: 100%">
+
+			<f:metadata>
+				<o:viewParam name="evento" value="#{cadastroEventoBean.evento}" />
+				<f:viewAction action="#{cadastroEventoBean.inicializar}" />
+			</f:metadata>
+
+			<p:toolbar>
+				<f:facet name="left">
+					<p:button value="Voltar" outcome="/meus-eventos.xhtml" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+
+			<h1 style="color: #0388e5; text-align: center">Editar Evento</h1>
+			<div class="ui-fluid">
+				<p:panelGrid columns="2"
+					columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10,ui-g-12 ui-md-10,ui-g-12 ui-md-10"
+					layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid layout-paginas">
+
+					<p:outputLabel value="Nome: " for="nome" />
+					<p:inputText id="nome" required="true"
+						value="#{cadastroEventoBean.evento.nome}" />
+
+					<p:outputLabel for="data" value="Data: " />
+					<p:calendar id="data" size="30" pattern="dd/MM/yyyy HH:mm"
+						navigator="true" value="#{cadastroEventoBean.evento.data}" />
+
+					<p:outputLabel value="Logradouro: " for="logradouro" />
+					<p:inputText id="logradouro"
+						value="#{cadastroEventoBean.evento.endereco.logradouro}" />
+
+					<p:outputLabel value="Numero: " for="numero" />
+					<p:inputNumber id="numero" size="30"
+						value="#{cadastroEventoBean.evento.endereco.numero}" />
+
+					<p:outputLabel value="CEP: " for="cep" />
+					<p:inputMask id="cep" mask="99.999-999" size="30"
+						value="#{cadastroEventoBean.evento.endereco.cep}" />
+
+					<p:outputLabel value="Bairro: " for="bairro" />
+					<p:inputText id="bairro" required="true"
+						value="#{cadastroEventoBean.evento.endereco.bairro}" />
+
+					<p:outputLabel value="Cidade: " for="cidade" />
+					<p:inputText id="cidade" required="true" size="30"
+						value="#{cadastroEventoBean.evento.endereco.cidade}" />
+
+					<p:outputLabel value="Estado: " for="estado" />
+					<p:selectOneMenu
+						value="#{cadastroEventoBean.evento.endereco.estado}"
+						required="true" id="estado">
+
+						<f:selectItem itemLabel="Selecione o estado"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{cadastroEventoBean.listaEstados}" var="t"
+							itemValue="#{t}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Foto: " for="foto" />
+					<p:fileUpload
+						fileUploadListener="#{cadastroEventoBean.handleFileUpload}"
+						mode="advanced" dragDropSupport="true" multiple="true"
+						update="messages" sizeLimit="1000000" fileLimit="1"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="foto" />
+
+					<p:growl id="messages" showDetail="true" />
+					<p:commandButton value="Editar"
+						action="#{cadastroEventoBean.editar}" update="formulario"
+						style="padding: 5px; margin-top: 25px" />
+				</p:panelGrid>
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

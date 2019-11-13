@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title><ui:insert name="titulo">Sistema de pedidos de venda</ui:insert></title>
+
+	<h:outputStylesheet library="css" name="sistema.css" />
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:growl id="growl" sticky="true" showSummary="false"
+			showDetail="true" life="5000" />
+		<header>
+
+			<div class="logo">
+				<h:graphicImage styleClass="logoImg" library="imagens"
+					alt="Logo do sistema" name="imgcao.png" />
+			</div>
+
+			<div class="menu">
+
+				<p:outputLabel styleClass="fontT"
+					value="AdoteAqui: Sistema de adoção e resgate de animais" />
+
+
+				<h:panelGroup rendered="#{usuarioBean.usuario == null}">
+					<div class="position">
+
+						<p:button value="Login"
+							onclick="PF('login').show(); PF('opcao').hide();return false" />
+
+						<p:button value="Cadastrar"
+							onclick="PF('opcao').show();  PF('login').hide(); return false" />
+
+					</div>
+
+				</h:panelGroup>
+
+				<h:panelGroup rendered="#{usuarioBean.usuario != null}"
+					styleClass="position">
+
+					<p:menubar styleClass="menubar">
+						<p:submenu label="#{usuarioBean.nomeUsuario}">
+
+							<p:menuitem value="Meus Anuncios" outcome="/anuncio-usuario" />
+							<p:menuitem value="Meus Eventos" outcome="/meus-eventos.xhtml" />
+							<p:separator />
+							<p:menuitem value="Meu Cadastro"
+								outcome="#{usuarioBean.meuCadastro}" />
+							<p:separator />
+							<p:menuitem value="Sair" action="#{usuarioBean.logout}" />
+						</p:submenu>
+
+					</p:menubar>
+				</h:panelGroup>
+
+			</div>
+
+
+			<p:toolbar styleClass="opcoes"
+				rendered="#{usuarioBean.usuario == null}">
+
+				<f:facet name="left">
+
+					<p:button value="Animais para adoção"
+						outcome="/animais-adocao.xhtml" />
+
+					<p:button value="Animais perdidos"
+						outcome="/animais-perdidos.xhtml" />
+
+					<p:button value="Mural de eventos" outcome="/mural-eventos.xhtml" />
+
+				</f:facet>
+
+				<f:facet name="right">
+
+					<p:button value="Cadastrar adoção"
+						onclick="PF('login').show(); PF('opcao').hide();return false" />
+
+					<p:button value="Cadastrar Evento"
+						onclick="PF('login').show(); PF('opcao').hide();return false" />
+
+				</f:facet>
+
+			</p:toolbar>
+
+
+			<p:toolbar styleClass="opcoes"
+				rendered="#{usuarioBean.usuario != null}">
+
+				<f:facet name="left">
+
+					<p:button value="Animais para adoção"
+						outcome="/animais-adocao.xhtml" />
+
+					<p:button value="Animais perdidos"
+						outcome="/animais-perdidos.xhtml" />
+
+					<p:button value="Mural de eventos" outcome="/mural-eventos.xhtml" />
+
+				</f:facet>
+
+				<f:facet name="right">
+
+					<p:button value="Cadastrar adoção" outcome="/cadastro-adocao.xhtml" />
+
+					<p:button value="Cadastrar Evento" outcome="/cadastro-evento.xhtml" />
+
+				</f:facet>
+
+			</p:toolbar>
+
+		</header>
+
+		<p:dialog header="Login" widgetVar="login" minHeight="40"
+			resizable="false">
+
+			<p:panelGrid columns="2">
+
+				<p:outputLabel value="E-mail: " for="email" />
+				<p:inputText id="email" value="#{usuarioBean.login}" size="50" />
+
+				<p:outputLabel value="Senha: " for="senha" />
+				<p:password id="senha" value="#{usuarioBean.senha}" />
+
+			</p:panelGrid>
+
+			<p:toolbar style="margin-top:10px">
+
+				<f:facet name="left">
+					<p:commandButton value="Entrar" update="growl"
+						action="#{usuarioBean.login}" />
+
+					<p:link value="Cadastre-se"
+						onclick="PF('opcao').show();  PF('login').hide(); return false"
+						style="margin-left:15px" />
+
+					<p:link value="Recuperar Senha" styleClass="recuperarSenha"
+						onclick="PF('recuperar').show();return false" />
+
+				</f:facet>
+			</p:toolbar>
+		</p:dialog>
+
+		<p:dialog header="Qual tipo de usuário é você?" widgetVar="opcao"
+			resizable="false">
+
+			<div style="float: left; margin-right: 120px; text-align: center;">
+				<h3>Pessoa física</h3>
+				<h:link outcome="/cadastroUsuario/cadastro-pessoa.xhtml">
+					<h:graphicImage library="imagens" alt="Usuário" name="usu.png" />
+				</h:link>
+
+			</div>
+			<div style="float: right; text-align: center;">
+				<h3>ONG</h3>
+				<h:link outcome="/cadastroOngs/cadastro-ongs">
+					<h:graphicImage library="imagens" alt="Ongs" name="ong.png" />
+				</h:link>
+			</div>
+		</p:dialog>
+
+
+		<p:dialog id="recuperarsenha"
+			header="Digite seu email para recuperar a senha"
+			widgetVar="recuperar" resizable="false">
+
+			<p:panelGrid columns="1">
+
+				<p:outputLabel value="E-mail: " for="e" />
+				<p:inputText id="e" value="#{usuarioBean.email}" size="50" />
+			</p:panelGrid>
+
+			<p:commandButton value="Enviar" action="#{usuarioBean.enviarEmail}"
+				update="recuperarsenha" style="margin-top:15px; margin-left:160px" />
+
+		</p:dialog>
+
+	</h:form>
+
+	<div id="conteudo">
+
+		<ui:insert name="corpo" />
+
+	</div>
+
+</h:body>
+</html>

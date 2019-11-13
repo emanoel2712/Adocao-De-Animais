@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="titulo">Animais para adoção</ui:define>
+	<ui:define name="corpo">
+
+		<f:metadata>
+
+			<f:viewAction action="#{pesquisaAnimalAdocaoBean.inicializar}"></f:viewAction>
+		</f:metadata>
+
+		<h:form id="form">
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+			<p:toolbar style="padding:5px; margin-bottom:10px;">
+
+				<f:facet name="left">
+
+					<p:outputLabel value="Buscar animal:"
+						style="margin-right:40px; margin:20px; font-size:18px" />
+
+					<p:selectOneMenu id="tipoAnimal"
+						value="#{pesquisaAnimalAdocaoBean.animal.tipoAnimal}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione o Tipo"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{pesquisaAnimalAdocaoBean.listaTipo}"
+							var="l" itemLabel="#{l}" itemValue="#{l}" />
+
+						<p:ajax listener="#{pesquisaAnimalAdocaoBean.configRacas}"
+							event="change" update="raca" />
+					</p:selectOneMenu>
+
+
+					<p:selectOneMenu id="raca"
+						value="#{pesquisaAnimalAdocaoBean.animal.raca.nome}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione a Raça"
+							noSelectionOption="true" />
+						<f:selectItems value="#{pesquisaAnimalAdocaoBean.selectRacas}" />
+
+					</p:selectOneMenu>
+
+
+					<p:selectOneMenu id="estado"
+						value="#{pesquisaAnimalAdocaoBean.animal.estado}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione o Estado"
+							noSelectionOption="true" />
+						<f:selectItems value="#{pesquisaAnimalAdocaoBean.listaEstado}"
+							var="lee" itemLabel="#{lee}" itemValue="#{lee}" />
+
+					</p:selectOneMenu>
+
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Pesquisar"
+						action="#{pesquisaAnimalAdocaoBean.pesquisarAnimais}"
+						update="coluna">
+
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataGrid var="a" value="#{pesquisaAnimalAdocaoBean.listaAnimal}"
+				columns="3" id="coluna" layout="grid" paginator="true"
+				paginatorPosition="bottom"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="8,17,25"
+				emptyMessage="Não há registros cadastrados">
+
+				<f:facet name="header">Animais para adoção</f:facet>
+
+				<p:panel header="#{a.nome}" style="text-align:center">
+
+					<p:galleria value="#{a.listFotos}" var="image" panelWidth="350"
+						panelHeight="300" showCaption="false" style="margin-left:25px"
+						autoPlay="false">
+						<p:graphicImage name="#{image.caminho}" alt="Imagem #{image}"
+							library="imagens" width="auto" height="100%" />
+					</p:galleria>
+
+					<h:panelGrid style="width:100%">
+
+						<p:outputLabel value="Estado: #{a.estado}" />
+						<p:outputLabel value="Cidade: #{a.cidade}" />
+						<p:outputLabel value="Observação: #{a.observacao}"
+							style="word-break: break-word;" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Info" oncomplete="PF('infoCao').show();"
+								icon="fa-fw" update="form:dialogo">
+								<f:setPropertyActionListener value="#{a}"
+									target="#{pesquisaAnimalAdocaoBean.animalSelecionado}" />
+								<p:ajax
+									listener="#{pesquisaAnimalAdocaoBean.informacaoAnimalOngPessoa}"
+									delay="200" update="form:usu" />
+
+							</p:commandButton>
+						</f:facet>
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dataGrid>
+
+
+			<p:dialog id="dialogo" header="Informações" widgetVar="infoCao"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Usuário" for="usu" />
+					<p:outputLabel id="usu"
+						value="#{pesquisaAnimalAdocaoBean.nomeUsuario}" />
+
+					<p:outputLabel for="nome" value="Raça: " />
+					<p:outputLabel id="nome"
+						value="#{pesquisaAnimalAdocaoBean.animalSelecionado.raca.nome}" />
+
+					<p:outputLabel value="Sexo: " for="sex" />
+					<p:outputLabel id="sex"
+						value="#{pesquisaAnimalAdocaoBean.animalSelecionado.sexo}" />
+
+				</p:panelGrid>
+
+				<p:toolbar>
+
+					<f:facet name="left">
+						<p:commandButton value="Adotar" style="font-size:16px;"
+							oncomplete="PF('confirmacaoExclusao').show();return false" />
+					</f:facet>
+
+					<f:facet name="right">
+						<h:commandLink value="Iniciar chat" target="_blank"
+							style="font-size:20px;"
+							action="#{pesquisaAnimalAdocaoBean.telefoneUsuario}" />
+					</f:facet>
+				</p:toolbar>
+
+			</p:dialog>
+
+			<p:confirmDialog header="Adoção Animal"
+				message="Tem certeza que deseja adotar esse animal ?"
+				widgetVar="confirmacaoExclusao">
+
+				<p:commandButton value="Sim" icon="ui-icon-check" iconPos="right"
+					action="#{pesquisaAnimalAdocaoBean.adotarAnimal}" update="form"
+					oncomplete="PF('confirmacaoExclusao').hide();" />
+
+				<p:button value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;"
+					icon="ui-icon-close" iconPos="right" />
+			</p:confirmDialog>
+
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

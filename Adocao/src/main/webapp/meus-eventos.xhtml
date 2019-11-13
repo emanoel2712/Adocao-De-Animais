@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="titulo">Anúncio usuário</ui:define>
+	<ui:define name="corpo">
+
+		<h:form id="formulario"
+			style="position:absolute; text-align:center; width: 100%">
+			<f:metadata>
+				<f:viewAction action="#{meusEventosBean.inicializar}" />
+			</f:metadata>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<h1 style="color: blue; text-align: center">Meus Eventos</h1>
+
+			<p:tabView id="ver">
+
+				<p:tab title="Publicado(s) ( #{meusEventosBean.numeroPublicacoes} )">
+
+					<p:carousel value="#{meusEventosBean.listEventos}"
+						headerText="Publicações" var="e" responsive="true">
+
+						<p:graphicImage name="#{e.foto.caminho}" width="350" height="300"
+							alt="Imagem" library="imagens" style="margin-left:20px" />
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome " />
+							<p:outputLabel value="#{e.nome}" />
+
+							<p:outputLabel value="Data" for="data" />
+							<p:outputLabel id="data" value="#{e.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Logradouro" />
+							<p:outputLabel value="#{e.endereco.logradouro}" />
+
+							<p:outputLabel value="Número" />
+							<p:outputLabel value="#{e.endereco.numero}" />
+
+							<p:outputLabel value="CEP" />
+							<p:outputLabel value="#{e.endereco.cep}" />
+
+							<p:outputLabel value="Bairro" />
+							<p:outputLabel value="#{e.endereco.bairro}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{e.endereco.cidade}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{e.endereco.estado}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							style="display: inline-block; position: relative;">
+
+							<p:column style="text-align: center; width: 80px;">
+
+								<p:button value="Editar" icon="ui-icon-pencil"
+									outcome="/editar-evento">
+									<f:param name="evento" value="#{e.id}" />
+								</p:button>
+
+								<p:commandButton value="Excluir" icon="ui-icon-trash"
+									action="#{meusEventosBean.excluir}" update="formulario">
+									<f:setPropertyActionListener value="#{e}"
+										target="#{meusEventosBean.evento}" />
+								</p:commandButton>
+							</p:column>
+						</p:panelGrid>
+					</p:carousel>
+				</p:tab>
+
+				<p:tab title="Expirado(s) ( #{meusEventosBean.numeroExpirado} )">
+					<p:carousel value="#{meusEventosBean.listEventoExpirado}"
+						headerText="Publicações" var="exp" responsive="true">
+
+						<p:graphicImage name="#{exp.foto.caminho}" width="350"
+							height="300" alt="Imagem" library="imagens"
+							style="margin-left:20px" />
+
+						<p:panelGrid columns="2" style="width:100%">
+
+							<p:outputLabel value="Nome " />
+							<p:outputLabel value="#{exp.nome}" />
+
+							<p:outputLabel value="Data" for="data" />
+							<p:outputLabel id="data" value="#{exp.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Logradouro" />
+							<p:outputLabel value="#{exp.endereco.logradouro}" />
+
+							<p:outputLabel value="Número" />
+							<p:outputLabel value="#{exp.endereco.numero}" />
+
+							<p:outputLabel value="CEP" />
+							<p:outputLabel value="#{exp.endereco.cep}" />
+
+							<p:outputLabel value="Bairro" />
+							<p:outputLabel value="#{exp.endereco.bairro}" />
+
+							<p:outputLabel value="Cidade" />
+							<p:outputLabel value="#{exp.endereco.cidade}" />
+
+							<p:outputLabel value="Estado" />
+							<p:outputLabel value="#{exp.endereco.estado}" />
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="1"
+							style="display: inline-block; position: relative;">
+
+							<p:column style="text-align: center; width: 80px;">
+
+								<p:commandButton value="Excluir" icon="ui-icon-trash"
+									action="#{meusEventosBean.excluir}" update="formulario">
+									<f:setPropertyActionListener value="#{exp}"
+										target="#{meusEventosBean.evento}" />
+								</p:commandButton>
+
+							</p:column>
+						</p:panelGrid>
+
+					</p:carousel>
+				</p:tab>
+			</p:tabView>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

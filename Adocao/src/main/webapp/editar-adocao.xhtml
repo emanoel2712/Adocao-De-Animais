@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+	<ui:define name="corpo">
+
+
+		<h:form id="formulario"
+			style="position:absolute; text-align:center; width: 100%">
+			<f:metadata>
+				<o:viewParam name="animal" value="#{cadastroAdocaoBean.animal}" />
+				<f:viewAction action="#{cadastroAdocaoBean.inicializar}" />
+			</f:metadata>
+
+			<p:toolbar>
+				<f:facet name="left">
+					<p:button value="Voltar" outcome="/anuncio-usuario.xhtml" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+
+			<div class="ui-fluid">
+
+				<h1
+					style="color: #0388e5; text-align: center; width: 100% !important;">Editar
+					Adoção</h1>
+
+				<p:panelGrid columns="2"
+					columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10,ui-g-12 ui-md-10,ui-g-12 ui-md-10"
+					layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid layout-paginas">
+
+					<p:outputLabel for="status" value="Status: " />
+					<p:selectOneRadio id="status"
+						value="#{cadastroAdocaoBean.animal.status}" unselectable="true"
+						required="true">
+						<f:selectItem itemLabel="Adoção" itemValue="adocao" />
+						<f:selectItem itemLabel="Perdido" itemValue="perdido" />
+					</p:selectOneRadio>
+
+					<p:outputLabel value="Nome: " for="nome" />
+					<p:inputText id="nome" value="#{cadastroAdocaoBean.animal.nome}"
+						required="true" />
+
+
+					<p:outputLabel value="Tipo Animal" for="tipoAnimal" />
+					<p:selectOneMenu value="#{cadastroAdocaoBean.tipoAnimal}"
+						id="tipoAnimal" required="true">
+
+						<f:selectItem itemLabel="Selecione o tipo do animal"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{cadastroAdocaoBean.listaAnimais}" var="v"
+							itemValue="#{v}" />
+
+						<p:ajax listener="#{cadastroAdocaoBean.configRacas}"
+							event="change" update="raca" />
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Raça: " for="raca" />
+					<p:selectOneMenu value="#{cadastroAdocaoBean.raca.id}" id="raca"
+						required="true">
+
+						<f:selectItem itemLabel="Selecione a raça"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{cadastroAdocaoBean.selectItemRacas}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Sexo: " for="sexo" />
+					<p:selectOneMenu value="#{cadastroAdocaoBean.animal.sexo}"
+						id="sexo" required="true">
+
+						<f:selectItem itemLabel="Selecione o sexo"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{cadastroAdocaoBean.tipoSexo}" var="t"
+							itemValue="#{t}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Estado: " for="estado" />
+					<p:selectOneMenu value="#{cadastroAdocaoBean.animal.estado}"
+						required="true" id="estado">
+
+						<f:selectItem itemLabel="Selecione o estado"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{cadastroAdocaoBean.listaEstados}" var="t"
+							itemValue="#{t}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Cidade: " for="cidade" />
+					<p:inputText value="#{cadastroAdocaoBean.animal.cidade}"
+						required="true" id="cidade" size="30" />
+
+					<p:outputLabel value="Foto: " for="foto" />
+					<p:fileUpload
+						fileUploadListener="#{cadastroAdocaoBean.handleFileUpload}"
+						mode="advanced" dragDropSupport="true" multiple="true"
+						update="messages" sizeLimit="1000000" fileLimit="10"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="foto" />
+
+
+					<p:outputLabel value="Descrição: " for="observacao" />
+					<p:inputTextarea id="observacao"
+						value="#{cadastroAdocaoBean.animal.observacao}" rows="5" cols="30"
+						counter="display" maxlength="255"
+						counterTemplate="{0} characters remaining." minQueryLength="4" />
+					<br />
+					<h:outputText id="display" />
+
+					<p:growl id="messages" showDetail="true" />
+					<p:commandButton action="#{cadastroAdocaoBean.editar}"
+						value="Editar" style="padding: 5px; margin-top: 25px"
+						update="formulario" />
+				</p:panelGrid>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

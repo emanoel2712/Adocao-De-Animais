@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="titulo">Animais Perdidos</ui:define>
+	<ui:define name="corpo">
+
+		<f:metadata>
+
+			<f:viewAction action="#{pesquisaAnimalPerdidoBean.inicializar}"></f:viewAction>
+		</f:metadata>
+
+		<h:form id="form">
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+			<p:toolbar style="padding:5px; margin-bottom:10px;">
+
+				<f:facet name="left">
+
+					<p:outputLabel value="Buscar animal:"
+						style="margin-right:40px; margin:20px; font-size:18px" />
+
+					<p:selectOneMenu id="tipoAnimal"
+						value="#{pesquisaAnimalPerdidoBean.animal.tipoAnimal}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione o Tipo"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{pesquisaAnimalPerdidoBean.listaTipo}"
+							var="l" itemLabel="#{l}" itemValue="#{l}" />
+
+						<p:ajax listener="#{pesquisaAnimalPerdidoBean.configRacas}"
+							event="change" update="raca" />
+					</p:selectOneMenu>
+
+
+					<p:selectOneMenu id="raca"
+						value="#{pesquisaAnimalPerdidoBean.animal.raca.nome}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione a Raça"
+							noSelectionOption="true" />
+						<f:selectItems value="#{pesquisaAnimalPerdidoBean.selectRacas}" />
+
+					</p:selectOneMenu>
+
+
+					<p:selectOneMenu id="estado"
+						value="#{pesquisaAnimalPerdidoBean.animal.estado}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione o Estado"
+							noSelectionOption="true" />
+						<f:selectItems value="#{pesquisaAnimalPerdidoBean.listaEstado}"
+							var="lee" itemLabel="#{lee}" itemValue="#{lee}" />
+
+					</p:selectOneMenu>
+
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Pesquisar"
+						action="#{pesquisaAnimalPerdidoBean.pesquisarAnimais}"
+						update="coluna">
+
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataGrid var="a" value="#{pesquisaAnimalPerdidoBean.listaAnimal}"
+				columns="3" id="coluna" layout="grid" paginator="true"
+				paginatorPosition="bottom"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="8,17,25"
+				emptyMessage="Não há registros cadastrados">
+
+				<f:facet name="header">Animais Perdidos</f:facet>
+
+				<p:panel header="#{a.nome}" style="text-align:center">
+
+					<p:galleria value="#{a.listFotos}" var="image" panelWidth="350"
+						panelHeight="300" showCaption="false" style="margin-left:25px"
+						autoPlay="false">
+						<p:graphicImage name="#{image.caminho}" alt="Imagem #{image}"
+							library="imagens" width="auto" height="100%" />
+					</p:galleria>
+
+					<h:panelGrid style="width:100%">
+
+						<p:outputLabel value="Estado: #{a.estado}" />
+						<p:outputLabel value="Cidade: #{a.cidade}" />
+						<p:outputLabel value="Observação: #{a.observacao}" />
+
+
+						<f:facet name="footer">
+							<p:commandButton value="Info" oncomplete="PF('infoCao').show();"
+								icon="fa-fw" update="form:dialogo">
+								<f:setPropertyActionListener value="#{a}"
+									target="#{pesquisaAnimalPerdidoBean.animalSelecionado}" />
+
+							</p:commandButton>
+						</f:facet>
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dataGrid>
+
+			<p:dialog id="dialogo" header="Informações" widgetVar="infoCao"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Usuário" for="usu" />
+					<p:outputLabel id="usu"
+						value="#{pesquisaAnimalPerdidoBean.nomeUsuario}" />
+
+					<p:outputLabel for="nome" value="Raça: " />
+					<p:outputLabel id="nome"
+						value="#{pesquisaAnimalPerdidoBean.animalSelecionado.raca.nome}" />
+
+					<p:outputLabel value="Sexo: " for="sex" />
+					<p:outputLabel id="sex"
+						value="#{pesquisaAnimalPerdidoBean.animalSelecionado.sexo}" />
+
+				</p:panelGrid>
+				<f:facet name="footer">
+					<h:commandLink value="Iniciar chat" target="_blank"
+						style="margin-left:35% ;font-size:19px;"
+						action="#{pesquisaAnimalPerdidoBean.telefoneUsuario}" />
+				</f:facet>
+			</p:dialog>
+
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

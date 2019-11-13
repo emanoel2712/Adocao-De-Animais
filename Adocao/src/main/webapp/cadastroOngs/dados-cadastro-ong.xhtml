@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="corpo">
+
+		<h:form id="formulario"
+			style="position:absolute; text-align:center; width: 100%">
+
+			<f:metadata>
+				<f:viewAction action="#{meusDadosOngBean.inicializar}" />
+			</f:metadata>
+
+			<p:messages closable="true" showSummary="false" showDetail="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<div class="ui-fluid">
+
+				<h1
+					style="color: #0388e5; text-align: center; width: 100% !important;">Configurações
+					gerais da conta</h1>
+				<h2
+					style="color: #0388e5; text-align: center; width: 100% !important;">Dados
+					do Usuário</h2>
+
+				<p:panelGrid columns="2"
+					columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10,ui-g-12 ui-md-10,ui-g-12 ui-md-10"
+					layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid layout-paginas">
+
+					<p:outputLabel value="Nome: " for="nome" />
+					<p:inputText id="nome" required="true"
+						value="#{meusDadosOngBean.ong.nome}" />
+
+					<p:outputLabel value="Descrição " for="descricao" />
+					<p:inputTextarea id="descricao"
+						value="#{meusDadosOngBean.ong.descricao}" />
+
+
+					<p:outputLabel value="WhatsApp " for="telefone" />
+					<p:inputMask id="telefone" value="#{meusDadosOngBean.ong.telefone}"
+						required="true" mask="(99) 99999-9999" size="30" />
+
+
+					<p:outputLabel value="Email: " for="email" />
+					<p:inputText id="email" required="true"
+						value="#{meusDadosOngBean.ong.email}" />
+
+					<p:outputLabel value="CNPJ: " for="cnpj" />
+					<p:inputMask id="cnpj" required="true" mask="99.999.999/9999-99"
+						value="#{meusDadosOngBean.ong.cnpj}" />
+
+					<p:outputLabel value="Logradouro " for="logradouro" />
+					<p:inputText id="logradouro" required="true"
+						value="#{meusDadosOngBean.ong.endereco.logradouro}" />
+
+					<p:outputLabel value="Número " for="num" />
+					<p:inputNumber id="num"
+						value="#{meusDadosOngBean.ong.endereco.numero}" />
+
+					<p:outputLabel value="Bairro: " for="bairro" />
+					<p:inputText id="bairro" required="true"
+						value="#{meusDadosOngBean.ong.endereco.bairro}" />
+
+					<p:outputLabel value="Cep: " for="cep" />
+					<p:inputMask id="cep" mask="99.999-999"
+						value="#{meusDadosOngBean.ong.endereco.cep}" />
+
+					<p:outputLabel value="Estado: " for="estado" />
+					<p:selectOneMenu id="estado" required="true"
+						value="#{meusDadosOngBean.ong.endereco.estado}"
+						style="margin-right:55px">
+
+						<f:selectItem itemLabel="Selecione o estado"
+							noSelectionOption="true" />
+
+						<f:selectItems value="#{meusDadosOngBean.listaEstados}" var="lee"
+							itemLabel="#{lee}" itemValue="#{lee}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Cidade: " for="cidade" />
+					<p:inputText id="cidade" required="true"
+						value="#{meusDadosOngBean.ong.endereco.cidade}" />
+
+
+					<p:panelGrid columns="3" style="margin-left:160%;">
+
+						<p:commandButton value="Salvar alterações"
+							styleClass="button-dados-usuario"
+							action="#{meusDadosOngBean.alterarDadosOng}" />
+
+						<p:button value="Alterar Senha" styleClass="button-dados-usuario"
+							onclick="PF('alterarSenha').show();return false" />
+
+						<p:button value="Recuperar Senha"
+							styleClass="button-dados-usuario"
+							onclick="PF('recuperar').show();return false" />
+
+					</p:panelGrid>
+
+				</p:panelGrid>
+			</div>
+
+			<p:dialog id="recuperarsenha"
+				header="Ao clicar no botão sua senha será enviada para o seu Email"
+				widgetVar="recuperar" resizable="false">
+
+
+				<p:commandButton value="Recuperar"
+					action="#{meusDadosOngBean.enviarEmail}" update="recuperarsenha"
+					style="margin-top:15px;margin-bottom:15px;" />
+
+			</p:dialog>
+
+
+			<p:dialog header="Alterar Senha" widgetVar="alterarSenha"
+				minHeight="40" modal="true" showEffect="fade" hideEffect="fade"
+				resizable="false">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Senha atual: " for="senha" />
+					<p:password id="senha" feedback="true"
+						value="#{meusDadosOngBean.senhaAtual}"
+						converterMessage="Digite a sua senha Atual!!" />
+
+					<p:outputLabel value="Nova Senha: " />
+					<p:password id="senhaAlterar" value="#{meusDadosOngBean.novaSenha}"
+						feedback="true" match="confirmacao" promptLabel="Digite uma senha"
+						weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte" />
+
+					<p:outputLabel value="Confirme sua senha " for="confirmacao" />
+					<p:password id="confirmacao" feedback="true"
+						promptLabel="Digite uma senha" weakLabel="Fraca" goodLabel="Boa"
+						converterMessage="Digite a senha igual ao campo acima para a confirmação"
+						strongLabel="Forte" />
+
+				</p:panelGrid>
+				<p:commandButton value="Enviar"
+					action="#{meusDadosOngBean.redefinirSenha}"
+					style="margin-top:15px;padding:6px"
+					oncomplete="PF('alterarSenha').hide();return false" />
+
+			</p:dialog>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
