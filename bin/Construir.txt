@@ -1,0 +1,11 @@
+#! / bin / bash -exu
+
+# brew install maven # para macosx
+O pacote mvn # cria target / demo.war
+# Mova o artefato para o pkg, para que não tenhamos que enviar o arquivo de destino inteiro
+# no contexto de construção da janela de encaixe. Vamos ancorar novamente o destino porque ele contém
+# outros arquivos de compilação que incham o contexto de upload enviado ao docker.
+mkdir -p pkg
+mv target / adocao.war pkg / adocao.war
+
+docker build -t adocao-java .
