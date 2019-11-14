@@ -9,7 +9,6 @@
 	<packaging>war</packaging>
 
 	<name>adocao</name>
-	<url>http://maven.apache.org</url>
 	<url>https://github.com/emanoel2712/prova.git</url>
 
 	<properties>
