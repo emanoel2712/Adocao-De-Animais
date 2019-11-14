@@ -17,7 +17,7 @@ pipeline {
         stage('Results'){
             steps{
                 script{
-                  def logz = currentBuild.rawBuild.getLog(1000);
+                  def logz = currentBuild.rawBuild.getLog(10000);
                   def result = logz.Find{it.contains('FAIL')}
                   if(result){
                     error('FAILING TO DUE' + result);
