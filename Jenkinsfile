@@ -14,16 +14,6 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Results'){
-            steps{
-                script{
-                  def logz = currentBuild.rawBuild.getLog(10000);
-                  def result = logz.Find{it.contains('Sucesso')}
-                  if(result){
-                    error('FAILING TO DUE' + result)
-                }
-            }
-           }
-        }        
+      
     }
 }
