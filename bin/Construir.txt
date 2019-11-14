@@ -1,4 +1,4 @@
 mkdir -p pkg
 mv target / adocao.war pkg / adocao.war
 
-docker build -t adocao-java .
+docker build -t adocao .
