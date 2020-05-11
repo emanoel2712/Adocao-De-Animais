@@ -20,10 +20,11 @@ Nesse projeto fizemos um sistema web destinado a adoção de animais.
 - MySql
 - Hibernate
 - JPA
-- Spring Boot
+- Java Server FaCES
 - CSS3
 - HTML5
 - Primefaces
+- Maven
 
 # Para utilizar:
 - Basta descompactar o projeto, abrir em alguma IDE de desenvolvimento, modificar o name e password do seu MySql no persistence.xml e após isso gerar a classe GeradorDeTabelas encontrada no pacote util. Após isso é só executar o projeto para rodar em localhost, utilizando o Apache Tomcat ou GlassFish.
